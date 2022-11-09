@@ -16,6 +16,10 @@ limitations under the License.
 
 package image_conversions
 
+import (
+  "math/rand"
+)
+
 var (
 	// Reference taken from http://paulbourke.net/dataformats/asciiart/
 	asciiTableSimple   = " .:-=+*#%@"
@@ -85,13 +89,8 @@ func ConvertToAsciiChars(imgSet [][]AsciiPixel, negative, colored, grayscale, co
 		var tempSlice []AsciiChar
 
 		// Gets appropriate string index from chosenTable by percentage comparisons with its length
-		var k = i % width
-		value := float64(imgSet[i][k].charDepth)
-		tempFloat := (value / MAX_VAL) * float64(len(chosenTable))
-		if value == MAX_VAL {
-			tempFloat = float64(len(chosenTable) - 1)
-		}
-		tempInt := int(tempFloat)
+		//tempInt := (i + i + i) % len(chosenTable)
+		tempInt := rand.Intn(len(chosenTable))
 
 		for j := 0; j < width; j++ {
 
