@@ -84,15 +84,16 @@ func ConvertToAsciiChars(imgSet [][]AsciiPixel, negative, colored, grayscale, co
 
 		var tempSlice []AsciiChar
 
-		for j := 0; j < width; j++ {
-			value := float64(imgSet[i][j].charDepth)
+		// Gets appropriate string index from chosenTable by percentage comparisons with its length
+		var k = i % width
+		value := float64(imgSet[i][k].charDepth)
+		tempFloat := (value / MAX_VAL) * float64(len(chosenTable))
+		if value == MAX_VAL {
+			tempFloat = float64(len(chosenTable) - 1)
+		}
+		tempInt := int(tempFloat)
 
-			// Gets appropriate string index from chosenTable by percentage comparisons with its length
-			tempFloat := (value / MAX_VAL) * float64(len(chosenTable))
-			if value == MAX_VAL {
-				tempFloat = float64(len(chosenTable) - 1)
-			}
-			tempInt := int(tempFloat)
+		for j := 0; j < width; j++ {
 
 			var r, g, b int
 
@@ -160,6 +161,11 @@ func ConvertToAsciiChars(imgSet [][]AsciiPixel, negative, colored, grayscale, co
 			}
 
 			tempSlice = append(tempSlice, char)
+			tempInt = tempInt + 1
+
+			if tempInt == len(chosenTable) {
+				tempInt = 0
+			}
 		}
 		result = append(result, tempSlice)
 	}
